@@ -1,0 +1,9 @@
+fastapi
+uvicorn[standard]
+python-multipart
+transformers
+torch
+faiss-cpu  # or faiss-gpu if you have a compatible GPU and setup
+Pillow
+psutil
+numpy

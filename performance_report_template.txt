@@ -1,0 +1,128 @@
+# Performance Report: Multi-Modal Embedding & Search API
+
+## 1. Introduction
+This report details the performance benchmarks of the Multi-Modal Embedding & Search API. The objective is to evaluate the system's efficiency in terms of latency, throughput, and resource utilization across its key components: data ingestion, embedding generation, and search retrieval.
+
+**Date of Report:** YYYY-MM-DD
+**Version of System Tested:** (e.g., Git commit hash or version tag)
+
+## 2. System Configuration
+
+### 2.1. Hardware
+* **CPU:** (e.g., Intel Core i7-10700K @ 3.80GHz, 8 Cores, 16 Threads)
+* **GPU:** (e.g., NVIDIA GeForce RTX 3080 10GB VRAM, or "CPU Only")
+* **RAM:** (e.g., 32 GB DDR4 @ 3200MHz)
+* **Storage:** (e.g., NVMe SSD 1TB)
+
+### 2.2. Software
+* **Operating System:** (e.g., Ubuntu 22.04 LTS, Windows 11 Pro)
+* **Python Version:** (e.g., 3.9.12)
+* **Key Libraries:**
+    * FastAPI: (version)
+    * Uvicorn: (version)
+    * FAISS: (version, cpu/gpu)
+    * Transformers: (version)
+    * PyTorch: (version, cuda version if applicable)
+    * Embedding Model Used: (e.g., `openai/clip-vit-base-patch32`)
+* **Database:** SQLite (version)
+
+## 3. Dataset Details
+* **Source:** (e.g., COCO 2017 Captions subset, Unsplash Lite subset)
+* **Size:**
+    * Number of Image-Text Pairs: (e.g., 1000)
+    * Total Size of Images: (e.g., 500 MB)
+    * Average Image Resolution: (e.g., 640x480)
+* **Metadata:** (Brief description of metadata fields: title, tags, category, etc.)
+
+## 4. Ingestion Performance
+
+### 4.1. Batch Ingestion
+* **Total Items Ingested:**
+* **Total Time Taken:** (seconds/minutes)
+* **Overall Throughput:** (items/second)
+* **Average Latency per Item (end-to-end):** (ms/item - if measurable)
+    * Time to read data
+    * Time for embedding (covered in next section, but can be part of overall)
+    * Time to write to FAISS
+    * Time to write to SQLite
+* **Bottlenecks Observed:**
+
+### 4.2. Streaming Ingestion (`/ingest_stream/` endpoint)
+* **Test Setup:** (e.g., Sent 100 individual requests sequentially/concurrently)
+* **API Response Time (P50, P90, P99):** (ms - this is the time for the API to accept the request, background processing is separate)
+* **Background Processing Time per Item (P50, P90, P99):** (ms - includes embedding, FAISS add, SQLite add)
+* **Throughput (for sustained streaming):** (items/second, if tested with concurrent load)
+* **Error Rate:** (%)
+
+## 5. Embedding Generation Performance
+
+* **Model:** (e.g., `openai/clip-vit-base-patch32`)
+* **Device Used:** (CPU / GPU model)
+
+### 5.1. Text Embedding
+* **Batch Sizes Tested:** (e.g., 1, 8, 16, 32, 64)
+* **Latency per Batch (for each batch size):** (ms)
+* **Latency per Item (derived, for each batch size):** (ms)
+* **Throughput (items/second, for each batch size):**
+* **Optimal Batch Size for Text:**
+
+### 5.2. Image Embedding
+* **Batch Sizes Tested:** (e.g., 1, 4, 8, 16, 32)
+* **Latency per Batch (for each batch size):** (ms)
+* **Latency per Item (derived, for each batch size):** (ms)
+* **Throughput (items/second, for each batch size):**
+* **Optimal Batch Size for Image:**
+
+### 5.3. Resource Utilization during Embedding (for optimal batch sizes)
+* **CPU Utilization:** (% average, % peak)
+* **GPU Utilization (if applicable):** (% average, % peak)
+* **GPU Memory Used (if applicable):** (MB / GB)
+* **System RAM Used by Embedding Process:** (MB)
+
+## 6. Search API Performance (`/search_text/` endpoint)
+
+* **Index Size (Number of Vectors in FAISS):**
+* **Test Queries:** (Description of test queries - e.g., 100 unique queries, average length)
+* **`top_n` value used for tests:**
+
+### 6.1. Query Latency
+*(Time from receiving request to sending response)*
+* **P50 (Median) Latency:** (ms)
+* **P90 Latency:** (ms)
+* **P99 Latency:** (ms)
+* **Average Latency:** (ms)
+    * Breakdown (if possible):
+        * Query Embedding Time: (ms)
+        * FAISS Search Time: (ms)
+        * Metadata Retrieval Time: (ms)
+
+### 6.2. Query Throughput
+* **Queries Per Second (QPS):** (Tested using a load testing tool like `k6`, `locust`, or `ab`)
+* **Concurrency Level for QPS Test:**
+
+### 6.3. Resource Utilization during Search (at peak QPS)
+* **CPU Utilization:** (% average, % peak)
+* **GPU Utilization (if query embedding is on GPU):** (% average, % peak)
+* **System RAM Used by API Process:** (MB)
+
+## 7. Monitoring & Observability Observations
+* **Key Metrics Logged:** (List the metrics you successfully logged, e.g., API latency, embedding time, error counts)
+* **Effectiveness of Logging:** (How useful were the logs for debugging and performance analysis?)
+* **Resource Monitoring Accuracy:** (How well did `psutil` or other tools capture resource usage?)
+
+## 8. Bottlenecks and Optimizations
+* **Identified Bottlenecks:** (e.g., Embedding generation CPU-bound, FAISS search time with large N, SQLite lookups)
+* **Optimizations Implemented:** (e.g., Batching strategy, choice of FAISS index, async processing for ingestion)
+* **Attempted Optimizations (and their results):**
+* **Future Optimization Suggestions:** (Based on findings)
+
+## 9. Conclusion & Summary
+* **Overall System Performance:** (Summarize if the system meets the "fast and efficient" criteria)
+* **Key Strengths:**
+* **Areas for Improvement:**
+* **Alignment with North Star Metric:** (How well does it perform on local/cloud CPU/GPU?)
+
+## Appendix (Optional)
+* Raw benchmark data tables.
+* Graphs of latency vs. batch size, throughput, etc.
+* Example log snippets.
